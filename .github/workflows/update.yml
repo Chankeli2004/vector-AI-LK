@@ -1,0 +1,44 @@
+name: Weekly DengueWatch data update
+
+on:
+  schedule:
+    # Wednesdays 04:00 UTC (~09:30 Sri Lanka time), a few days after the
+    # ISO week (Mon-Sun) closes, so both the case PDF and Open-Meteo's
+    # archive have caught up. Adjust if the source publishes on a
+    # different cadence.
+    - cron: "0 4 * * 3"
+  workflow_dispatch: {}   # lets you trigger a run manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests pdfplumber pandas numpy statsmodels scikit-learn
+
+      - name: Fetch latest case data
+        run: python scripts/fetch_cases.py
+
+      - name: Fetch latest weather data
+        run: python scripts/fetch_weather.py
+
+      - name: Rebuild forecasts
+        run: python scripts/build_data.py
+
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name "denguewatch-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data.json data/history.csv data/weather.csv data/last_snapshot.json
+          git diff --cached --quiet || git commit -m "Weekly data update $(date -u +%Y-%m-%d)"
+          git push

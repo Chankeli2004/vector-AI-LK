@@ -1,0 +1,56 @@
+Current Status of Dengue in Sri Lanka As of 07.07.2026 midnight
+High -risk MOH Areas
+[Week 26, 2026] 142
+Average Mid - night Total
+[Week 26, 2026] 2604
+Dengue Deaths in 2026 42
+Case Fatality Rate 0.07%
+Source: NaDSys surveillance
+2026 63835
+July 8451
+June 21543
+May 8590
+April 5651
+March 6013
+February 5721
+January 7866
+District/ Unit No of Cases %
+Colombo 12968 20.31%
+Gampaha 12929 20.25%
+Matara 4556 7.14%
+Kalutara 4283 6.71%
+Kandy 4019 6.30%
+Ratnapura 3734 5.85%
+Galle 3697 5.79%
+CMC 2670 4.18%
+Hambantota 1813 2.84%
+Kegalle 1728 2.71%
+Kurunegala 1692 2.65%
+Batticaloa 1238 1.94%
+Puttalam 1202 1.88%
+Badulla 860 1.35%
+District/ Unit No of Cases %
+Kalmunai 799 1.25%
+Monaragala 799 1.25%
+Jaffna 724 1.13%
+NIHS 722 1.13%
+Matale 680 1.07%
+Trincomalee 569 0.89%
+Anuradhapura 550 0.86%
+Polonnaruwa 509 0.80%
+Ampara 442 0.69%
+Nuwaraeliya 383 0.60%
+Vavuniya 105 0.16%
+Mannar 67 0.10%
+Kilinochchi 59 0.09%
+Mullaitivu 38 0.06%
+Province No of Cases %
+Western 33572 52.59%
+Southern 10066 15.77%
+Sabaragamuwa 5462 8.56%
+Central 5082 7.96%
+Eastern 3048 4.77%
+North Western 2894 4.53%
+Uva 1659 2.60%
+North Central 1059 1.66%
+Northern 993 1.56%
