@@ -62,6 +62,43 @@ def fetch_pdf_text(target_date: date) -> str:
     return "\n".join(text_parts)
 
 
+# How many days back to search for the most recent published PDF. The
+# Ministry does not publish this daily update every single calendar day
+# (gaps of several days are normal -- weekends, holidays, or just delays),
+# so we can't assume today's exact date exists.
+MAX_LOOKBACK_DAYS = 10
+
+
+def fetch_latest_pdf_text():
+    """Try today, then walk backward day by day until a PDF is found.
+    Returns (text, actual_date) or raises if nothing found in the window."""
+    today = date.today()
+    for offset in range(MAX_LOOKBACK_DAYS + 1):
+        d = today - timedelta(days=offset)
+        url = PDF_URL_TEMPLATE.format(year=d.year, month=d.month, day=d.day)
+        try:
+            resp = requests.get(url, timeout=30)
+            if resp.status_code == 404:
+                print(f"  no PDF for {d.isoformat()}, trying earlier...")
+                continue
+            resp.raise_for_status()
+            import pdfplumber
+            import io
+            text_parts = []
+            with pdfplumber.open(io.BytesIO(resp.content)) as pdf:
+                for page in pdf.pages:
+                    text_parts.append(page.extract_text() or "")
+            print(f"  found PDF for {d.isoformat()}")
+            return "\n".join(text_parts), d
+        except requests.HTTPError as e:
+            print(f"  error fetching {d.isoformat()}: {e}, trying earlier...")
+            continue
+    raise RuntimeError(
+        f"No Daily-Update PDF found in the last {MAX_LOOKBACK_DAYS} days "
+        f"(checked back from {today.isoformat()})."
+    )
+
+
 def parse_cumulative_table(text: str) -> dict:
     """Parse the 'District/ Unit  No of Cases  %' rows into a dict of
     canonical district -> cumulative case count. Lines that don't match
@@ -89,12 +126,11 @@ def iso_week_info(d: date):
 
 
 def main():
-    today = date.today()
-    print(f"Fetching NaDSys PDF for {today.isoformat()}...")
+    print(f"Searching for the most recent NaDSys PDF (up to {MAX_LOOKBACK_DAYS} days back)...")
     try:
-        text = fetch_pdf_text(today)
+        text, pdf_date = fetch_latest_pdf_text()
     except Exception as e:
-        print(f"FATAL: could not fetch/parse today's PDF: {e}", file=sys.stderr)
+        print(f"FATAL: could not fetch/parse any recent PDF: {e}", file=sys.stderr)
         sys.exit(1)
 
     current_cumulative = parse_cumulative_table(text)
@@ -105,13 +141,13 @@ def main():
               file=sys.stderr)
         sys.exit(1)
 
-    iso_year, iso_week, week_start = iso_week_info(today)
+    iso_year, iso_week, week_start = iso_week_info(pdf_date)
 
     if not SNAPSHOT_JSON.exists():
         print("No prior snapshot found -- bootstrapping only. "
               "The real weekly number will appear on the NEXT run.")
         SNAPSHOT_JSON.write_text(json.dumps({
-            "date": today.isoformat(), "cumulative": current_cumulative,
+            "date": pdf_date.isoformat(), "cumulative": current_cumulative,
         }, indent=2))
         return
 
@@ -139,7 +175,7 @@ def main():
     print(f"Appended week {iso_week}, {iso_year} for {len(new_rows)} districts.")
 
     SNAPSHOT_JSON.write_text(json.dumps({
-        "date": today.isoformat(), "cumulative": current_cumulative,
+        "date": pdf_date.isoformat(), "cumulative": current_cumulative,
     }, indent=2))
 
 
