@@ -139,6 +139,19 @@ def main():
         print(f"FATAL: parse only recovered {len(current_cumulative)}/25 "
               f"districts. Missing: {sorted(missing)}. Refusing to write.",
               file=sys.stderr)
+        # Diagnostic dump: if we recovered nothing at all, the PDF's text
+        # layer likely doesn't look like we expect (could be a scanned/
+        # image-only PDF with no extractable text, or the table layout
+        # changed). Print what we actually got so the log tells us why,
+        # instead of needing someone to re-fetch the PDF by hand to debug.
+        if len(current_cumulative) == 0:
+            print("\n--- DIAGNOSTIC: first 3000 chars of extracted PDF text ---",
+                  file=sys.stderr)
+            print(text[:3000] if text.strip() else "(text layer was EMPTY -- "
+                  "this PDF is likely a scanned image with no extractable "
+                  "text, which pdfplumber cannot OCR. Would need an OCR "
+                  "step, e.g. pytesseract, to handle this.)", file=sys.stderr)
+            print("--- end diagnostic ---\n", file=sys.stderr)
         sys.exit(1)
 
     iso_year, iso_week, week_start = iso_week_info(pdf_date)
