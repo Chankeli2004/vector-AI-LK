@@ -44,7 +44,15 @@ PDF_URL_TEMPLATE = (
     "Daily-Update-{year}.-{month:02d}.-{day:02d}.pdf"
 )
 
-ROW_RE = re.compile(r"^([A-Za-z][A-Za-z /\-]*?)\s+(\d{1,6})\s+[\d.]+%\s*$")
+# The August 2026 report switched to a multi-column layout: pdfplumber
+# reads several side-by-side table columns onto ONE flattened line, e.g.
+#   "August 3175 Gampaha 18832 21.27% NIHS 1143 1.29% Western 46885 52.96%"
+# instead of one district per line like earlier months. So rather than
+# anchor a regex to a whole line, we scan for the repeating
+# "Name  Count  Percent%" pattern anywhere in the text. \s+ deliberately
+# matches across newlines too, since pdfplumber's line breaks don't
+# reliably align with table cell boundaries in this layout either.
+ENTRY_RE = re.compile(r"([A-Za-z][A-Za-z \-]*?)\s+(\d{1,6})\s+[\d.]+%")
 
 
 def fetch_pdf_text(target_date: date) -> str:
@@ -100,18 +108,18 @@ def fetch_latest_pdf_text():
 
 
 def parse_cumulative_table(text: str) -> dict:
-    """Parse the 'District/ Unit  No of Cases  %' rows into a dict of
-    canonical district -> cumulative case count. Lines that don't match
-    a district row (headers, province table, etc.) are ignored."""
+    """Parse 'Name  Count  Percent%' entries anywhere in the text into a
+    dict of canonical district -> cumulative case count. Deliberately NOT
+    line-anchored: the August 2026 layout packs multiple district/count/
+    percent triples onto one flattened line, so we scan the whole text
+    for the repeating pattern instead of expecting one entry per line."""
     out = {}
-    for line in text.splitlines():
-        m = ROW_RE.match(line.strip())
-        if not m:
-            continue
-        raw_name, count = m.group(1), int(m.group(2))
+    for m in ENTRY_RE.finditer(text):
+        raw_name, count = m.group(1).strip(), int(m.group(2))
         district = normalize_district(raw_name)
         if district is None:
-            continue  # not a district row, or a deliberately-excluded unit
+            continue  # not a district row (a month/province total, header,
+                       # etc.), or a deliberately-excluded unit like NIHS
         # Accumulate rather than overwrite: aliased sub-units like CMC
         # (-> Colombo) and Kalmunai (-> Ampara) must ADD to the parent
         # district's own row, which appears separately in the table.
