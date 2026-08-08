@@ -16,12 +16,18 @@ the spread across the two models plus each model's own residual
 variance -- deliberately conservative (wide) rather than falsely
 precise, since 4-week-ahead dengue forecasting is genuinely uncertain.
 
-Risk labels are relative to each district's OWN recent baseline (not a
-fixed case-count cutoff), since a "high" week means something very
-different in Colombo (hundreds of cases) vs Mullaitivu (single digits):
-  - High:   forecast mean > 1.3x the district's trailing 8-week mean
-  - Low:    forecast mean < 0.7x the district's trailing 8-week mean
-  - Medium: otherwise
+Risk is now TWO separate signals, deliberately kept apart:
+  - severity: an ABSOLUTE badge (High/Medium/Low), based on where this
+    district's current case count sits relative to the 33rd/67th
+    percentile of ALL district-week case counts in the whole dataset.
+    "High" means genuinely large, full stop -- not large-for-this-district.
+  - trend: a RELATIVE arrow (Rising/Stable/Falling), based on comparing
+    the forecast to this district's OWN recent baseline. A small
+    district can show "Rising" on a small absolute number, which is a
+    real and useful signal (an emerging local outbreak) -- it just isn't
+    the same thing as being severe in absolute terms, and showing both
+    avoids the confusing case where a district with fewer total cases
+    than another gets a scarier-looking single badge.
 """
 import json
 import sys
@@ -122,13 +128,37 @@ def forecast_district(series: np.ndarray, rf_model, rf_resid_std,
     return forecast, conf_low, conf_high, hw_resid_std, rf_resid_std
 
 
-def classify_risk(forecast_mean: float, baseline_mean: float):
+def classify_trend(forecast_mean: float, baseline_mean: float):
+    """Direction relative to the district's OWN recent baseline. This
+    answers 'is it getting worse here', independent of how big the
+    absolute numbers are."""
     if baseline_mean <= 0:
-        return "Low" if forecast_mean < 1 else "Medium"
+        return "Rising" if forecast_mean >= 1 else "Stable"
     ratio = forecast_mean / baseline_mean
     if ratio > 1.3:
-        return "High"
+        return "Rising"
     if ratio < 0.7:
+        return "Falling"
+    return "Stable"
+
+
+def compute_severity_thresholds(df: pd.DataFrame):
+    """Data-driven absolute severity bands: the 33rd/67th percentile of
+    ALL district-week case counts in the whole dataset (not just this
+    district, not just this week). This answers 'how big is this
+    compared to what's typical for any district in any week' -- an
+    absolute yardstick, deliberately separate from classify_trend()
+    above, which only looks at each district relative to itself."""
+    all_cases = df["cases"].to_numpy()
+    low_cut = float(np.percentile(all_cases, 33))
+    high_cut = float(np.percentile(all_cases, 67))
+    return low_cut, high_cut
+
+
+def classify_severity(last_cases: int, low_cut: float, high_cut: float):
+    if last_cases >= high_cut:
+        return "High"
+    if last_cases <= low_cut:
         return "Low"
     return "Medium"
 
@@ -142,6 +172,7 @@ def main():
         sys.exit(1)
 
     rf_model, rf_resid_std = train_rf(df)
+    severity_low_cut, severity_high_cut = compute_severity_thresholds(df)
 
     out = {}
     for d in DISTRICTS:
@@ -163,7 +194,8 @@ def main():
 
         baseline_mean = float(window.mean())
         forecast_mean = float(forecast.mean())
-        risk = classify_risk(forecast_mean, baseline_mean)
+        trend = classify_trend(forecast_mean, baseline_mean)
+        severity = classify_severity(int(full_series[-1]), severity_low_cut, severity_high_cut)
 
         # Confidence score: how tight the band is relative to the forecast
         # (narrower band + models agreeing => higher confidence), clipped to [0,1]
@@ -175,7 +207,8 @@ def main():
             "forecast": [round(float(v)) for v in forecast],
             "conf_low": [round(float(v)) for v in conf_low],
             "conf_high": [round(float(v)) for v in conf_high],
-            "risk": risk,
+            "severity": severity,
+            "trend": trend,
             "confidence": confidence,
             "last_cases": int(full_series[-1]),
             "last_rainfall": round(last_rainfall, 1),
