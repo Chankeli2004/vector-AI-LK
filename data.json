@@ -2,7 +2,7 @@
  "meta": {
   "iso_year": 2026,
   "iso_week": 26,
-  "generated_at": "2026-08-08T02:22:12.411646+00:00"
+  "generated_at": "2026-08-08T02:35:03.523754+00:00"
  },
  "districts": {
   "Colombo": {
@@ -34,7 +34,8 @@
     438,
     1244
    ],
-   "risk": "Medium",
+   "severity": "High",
+   "trend": "Stable",
    "confidence": 0.35,
    "last_cases": 1138,
    "last_rainfall": 111.4,
@@ -69,7 +70,8 @@
     445,
     1305
    ],
-   "risk": "Medium",
+   "severity": "High",
+   "trend": "Stable",
    "confidence": 0.34,
    "last_cases": 1294,
    "last_rainfall": 90.5,
@@ -104,7 +106,8 @@
     357,
     989
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.48,
    "last_cases": 551,
    "last_rainfall": 114.8,
@@ -139,7 +142,8 @@
     329,
     459
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.76,
    "last_cases": 472,
    "last_rainfall": 42.1,
@@ -174,7 +178,8 @@
     1050,
     485
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.3,
    "last_cases": 49,
    "last_rainfall": 44.2,
@@ -209,7 +214,8 @@
     220,
     257
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.3,
    "last_cases": 66,
    "last_rainfall": 35.3,
@@ -244,7 +250,8 @@
     732,
     456
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.7,
    "last_cases": 281,
    "last_rainfall": 54.7,
@@ -279,7 +286,8 @@
     224,
     430
    ],
-   "risk": "Medium",
+   "severity": "High",
+   "trend": "Stable",
    "confidence": 0.54,
    "last_cases": 449,
    "last_rainfall": 26.2,
@@ -314,7 +322,8 @@
     199,
     213
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.69,
    "last_cases": 192,
    "last_rainfall": 9.2,
@@ -349,7 +358,8 @@
     46,
     51
    ],
-   "risk": "Medium",
+   "severity": "Medium",
+   "trend": "Stable",
    "confidence": 0.3,
    "last_cases": 24,
    "last_rainfall": 1.9,
@@ -384,7 +394,8 @@
     592,
     173
    ],
-   "risk": "High",
+   "severity": "Low",
+   "trend": "Rising",
    "confidence": 0.3,
    "last_cases": 6,
    "last_rainfall": 4.1,
@@ -419,7 +430,8 @@
     562,
     174
    ],
-   "risk": "High",
+   "severity": "Low",
+   "trend": "Rising",
    "confidence": 0.3,
    "last_cases": 5,
    "last_rainfall": 0.8,
@@ -454,7 +466,8 @@
     60,
     62
    ],
-   "risk": "Medium",
+   "severity": "Low",
+   "trend": "Stable",
    "confidence": 0.3,
    "last_cases": 8,
    "last_rainfall": 9.1,
@@ -489,7 +502,8 @@
     22,
     26
    ],
-   "risk": "Medium",
+   "severity": "Low",
+   "trend": "Stable",
    "confidence": 0.3,
    "last_cases": 3,
    "last_rainfall": 12.5,
@@ -524,7 +538,8 @@
     86,
     91
    ],
-   "risk": "Medium",
+   "severity": "High",
+   "trend": "Stable",
    "confidence": 0.69,
    "last_cases": 52,
    "last_rainfall": 30.6,
@@ -559,7 +574,8 @@
     90,
     99
    ],
-   "risk": "Medium",
+   "severity": "High",
+   "trend": "Stable",
    "confidence": 0.38,
    "last_cases": 69,
    "last_rainfall": 33.1,
@@ -594,7 +610,8 @@
     65,
     62
    ],
-   "risk": "Medium",
+   "severity": "Medium",
+   "trend": "Stable",
    "confidence": 0.52,
    "last_cases": 32,
    "last_rainfall": 20.0,
@@ -629,7 +646,8 @@
     487,
     623
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.71,
    "last_cases": 218,
    "last_rainfall": 43.0,
@@ -664,7 +682,8 @@
     153,
     146
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.53,
    "last_cases": 148,
    "last_rainfall": 21.1,
@@ -699,7 +718,8 @@
     64,
     74
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.3,
    "last_cases": 51,
    "last_rainfall": 14.3,
@@ -734,7 +754,8 @@
     83,
     90
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.38,
    "last_cases": 63,
    "last_rainfall": 14.3,
@@ -769,7 +790,8 @@
     135,
     145
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.51,
    "last_cases": 115,
    "last_rainfall": 23.9,
@@ -804,7 +826,8 @@
     101,
     109
    ],
-   "risk": "High",
+   "severity": "High",
+   "trend": "Rising",
    "confidence": 0.61,
    "last_cases": 91,
    "last_rainfall": 15.4,
@@ -839,7 +862,8 @@
     312,
     331
    ],
-   "risk": "Medium",
+   "severity": "High",
+   "trend": "Stable",
    "confidence": 0.85,
    "last_cases": 264,
    "last_rainfall": 142.1,
@@ -874,7 +898,8 @@
     149,
     179
    ],
-   "risk": "Medium",
+   "severity": "High",
+   "trend": "Stable",
    "confidence": 0.65,
    "last_cases": 187,
    "last_rainfall": 81.0,
