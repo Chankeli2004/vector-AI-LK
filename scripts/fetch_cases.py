@@ -90,20 +90,41 @@ def fetch_latest_pdf_text():
                 print(f"  no PDF for {d.isoformat()}, trying earlier...")
                 continue
             resp.raise_for_status()
+
+            # The server can return 200 with something that ISN'T actually
+            # a PDF (an HTML "not found"/maintenance page, an empty body,
+            # a redirect that got followed to a webpage, etc). Real PDFs
+            # start with the magic bytes b"%PDF". Checking this up front
+            # turns that case into "try an earlier date" instead of a
+            # crash that aborts the whole lookback loop.
+            if not resp.content.startswith(b"%PDF"):
+                print(f"  {d.isoformat()} returned 200 but isn't a real PDF "
+                      f"(content-type: {resp.headers.get('content-type')}), "
+                      f"trying earlier...")
+                continue
+
             import pdfplumber
             import io
-            text_parts = []
-            with pdfplumber.open(io.BytesIO(resp.content)) as pdf:
-                for page in pdf.pages:
-                    text_parts.append(page.extract_text() or "")
+            try:
+                text_parts = []
+                with pdfplumber.open(io.BytesIO(resp.content)) as pdf:
+                    for page in pdf.pages:
+                        text_parts.append(page.extract_text() or "")
+            except Exception as e:
+                # A malformed/corrupt PDF at this date -- don't abort the
+                # whole search, just try an earlier date.
+                print(f"  {d.isoformat()} PDF failed to parse ({e}), "
+                      f"trying earlier...")
+                continue
+
             print(f"  found PDF for {d.isoformat()}")
             return "\n".join(text_parts), d
-        except requests.HTTPError as e:
+        except requests.RequestException as e:
             print(f"  error fetching {d.isoformat()}: {e}, trying earlier...")
             continue
     raise RuntimeError(
-        f"No Daily-Update PDF found in the last {MAX_LOOKBACK_DAYS} days "
-        f"(checked back from {today.isoformat()})."
+        f"No valid Daily-Update PDF found in the last {MAX_LOOKBACK_DAYS} "
+        f"days (checked back from {today.isoformat()})."
     )
 
 
