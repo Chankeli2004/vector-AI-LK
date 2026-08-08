@@ -2,368 +2,53 @@
  "meta": {
   "iso_year": 2026,
   "iso_week": 32,
-  "generated_at": "2026-08-08T02:06:06.615845+00:00"
+  "generated_at": "2026-08-08T02:07:37.714874+00:00"
  },
  "districts": {
   "Colombo": {
    "history": [
-    328,
     308,
     358,
     398,
     507,
     20,
     1138,
+    0,
     0
    ],
    "forecast": [
-    493,
-    143,
-    464,
-    179
+    2,
+    2,
+    2,
+    2
    ],
    "conf_low": [
-    115,
+    0,
     0,
     0,
     0
    ],
    "conf_high": [
-    870,
-    333,
-    1024,
-    387
+    88,
+    115,
+    142,
+    168
    ],
-   "risk": "Medium",
-   "confidence": 0.35,
+   "risk": "Low",
+   "confidence": 0.3,
    "last_cases": 0,
    "last_rainfall": 50.7,
    "last_temp": 27.0
   },
   "Gampaha": {
    "history": [
-    199,
     213,
     406,
     462,
     502,
     24,
     1294,
-    0
-   ],
-   "forecast": [
-    484,
-    115,
-    457,
-    152
-   ],
-   "conf_low": [
-    60,
     0,
-    0,
-    0
-   ],
-   "conf_high": [
-    909,
-    269,
-    1091,
-    326
-   ],
-   "risk": "Medium",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 58.9,
-   "last_temp": 26.6
-  },
-  "Kalutara": {
-   "history": [
-    123,
-    157,
-    181,
-    243,
-    318,
-    53,
-    551,
-    0
-   ],
-   "forecast": [
-    454,
-    85,
-    426,
-    124
-   ],
-   "conf_low": [
-    43,
-    23,
-    0,
-    0
-   ],
-   "conf_high": [
-    864,
-    147,
-    1035,
-    272
-   ],
-   "risk": "High",
-   "confidence": 0.31,
-   "last_cases": 0,
-   "last_rainfall": 52.1,
-   "last_temp": 26.3
-  },
-  "Kandy": {
-   "history": [
-    103,
-    135,
-    180,
-    168,
-    286,
-    47,
-    472,
-    0
-   ],
-   "forecast": [
-    274,
-    63,
-    486,
-    95
-   ],
-   "conf_low": [
-    6,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    542,
-    136,
-    1254,
-    264
-   ],
-   "risk": "High",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 37.1,
-   "last_temp": 23.9
-  },
-  "Matale": {
-   "history": [
-    15,
-    11,
-    15,
-    23,
-    38,
-    889,
-    49,
-    0
-   ],
-   "forecast": [
-    19,
-    15,
-    18,
-    18
-   ],
-   "conf_low": [
-    0,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    83,
-    103,
-    122,
-    141
-   ],
-   "risk": "Low",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 47.0,
-   "last_temp": 24.7
-  },
-  "Nuwara Eliya": {
-   "history": [
-    10,
-    9,
-    17,
-    5,
-    13,
-    154,
-    66,
-    0
-   ],
-   "forecast": [
-    16,
-    19,
-    16,
-    19
-   ],
-   "conf_low": [
-    0,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    42,
-    58,
-    60,
-    74
-   ],
-   "risk": "Low",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 42.9,
-   "last_temp": 15.7
-  },
-  "Galle": {
-   "history": [
-    71,
-    104,
-    137,
-    140,
-    150,
-    742,
-    281,
-    0
-   ],
-   "forecast": [
-    170,
-    79,
-    134,
-    110
-   ],
-   "conf_low": [
-    37,
-    1,
-    0,
-    0
-   ],
-   "conf_high": [
-    302,
-    156,
-    285,
-    243
-   ],
-   "risk": "Low",
-   "confidence": 0.36,
-   "last_cases": 0,
-   "last_rainfall": 54.0,
-   "last_temp": 26.4
-  },
-  "Matara": {
-   "history": [
-    88,
-    93,
-    181,
-    156,
-    214,
-    21,
-    449,
-    0
-   ],
-   "forecast": [
-    252,
-    61,
-    225,
-    100
-   ],
-   "conf_low": [
-    0,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    506,
-    143,
-    588,
-    295
-   ],
-   "risk": "Medium",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 42.1,
-   "last_temp": 26.5
-  },
-  "Hambantota": {
-   "history": [
-    24,
-    58,
-    53,
-    31,
-    100,
-    119,
-    192,
-    0
-   ],
-   "forecast": [
-    95,
-    49,
-    74,
-    78
-   ],
-   "conf_low": [
-    2,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    188,
-    111,
-    189,
-    223
-   ],
-   "risk": "Medium",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 28.3,
-   "last_temp": 27.6
-  },
-  "Jaffna": {
-   "history": [
-    20,
-    22,
-    18,
-    15,
-    18,
-    14,
-    24,
-    0
-   ],
-   "forecast": [
-    16,
-    8,
-    12,
-    10
-   ],
-   "conf_low": [
-    0,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    43,
-    34,
-    51,
-    55
-   ],
-   "risk": "Low",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 24.0,
-   "last_temp": 27.9
-  },
-  "Kilinochchi": {
-   "history": [
-    1,
-    2,
-    6,
-    1,
-    4,
-    419,
-    6,
     0
    ],
    "forecast": [
@@ -379,30 +64,30 @@
     0
    ],
    "conf_high": [
-    39,
-    50,
-    61,
-    72
+    92,
+    118,
+    144,
+    171
    ],
    "risk": "Low",
    "confidence": 0.3,
    "last_cases": 0,
-   "last_rainfall": 27.2,
-   "last_temp": 27.7
+   "last_rainfall": 58.9,
+   "last_temp": 26.6
   },
-  "Mannar": {
+  "Kalutara": {
    "history": [
-    2,
-    4,
-    1,
-    1,
-    5,
-    387,
-    5,
+    157,
+    181,
+    243,
+    318,
+    53,
+    551,
+    0,
     0
    ],
    "forecast": [
-    3,
+    2,
     2,
     2,
     2
@@ -414,7 +99,322 @@
     0
    ],
    "conf_high": [
-    36,
+    48,
+    61,
+    75,
+    88
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 52.1,
+   "last_temp": 26.3
+  },
+  "Kandy": {
+   "history": [
+    135,
+    180,
+    168,
+    286,
+    47,
+    472,
+    0,
+    0
+   ],
+   "forecast": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    45,
+    58,
+    72,
+    85
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 37.1,
+   "last_temp": 23.9
+  },
+  "Matale": {
+   "history": [
+    11,
+    15,
+    23,
+    38,
+    889,
+    49,
+    0,
+    0
+   ],
+   "forecast": [
+    11,
+    11,
+    11,
+    11
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    81,
+    102,
+    123,
+    144
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 47.0,
+   "last_temp": 24.7
+  },
+  "Nuwara Eliya": {
+   "history": [
+    9,
+    17,
+    5,
+    13,
+    154,
+    66,
+    0,
+    0
+   ],
+   "forecast": [
+    6,
+    7,
+    7,
+    8
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    31,
+    38,
+    45,
+    52
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 42.9,
+   "last_temp": 15.7
+  },
+  "Galle": {
+   "history": [
+    104,
+    137,
+    140,
+    150,
+    742,
+    281,
+    0,
+    0
+   ],
+   "forecast": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    59,
+    76,
+    94,
+    111
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 54.0,
+   "last_temp": 26.4
+  },
+  "Matara": {
+   "history": [
+    93,
+    181,
+    156,
+    214,
+    21,
+    449,
+    0,
+    0
+   ],
+   "forecast": [
+    2,
+    2,
+    2,
+    2
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    42,
+    54,
+    66,
+    78
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 42.1,
+   "last_temp": 26.5
+  },
+  "Hambantota": {
+   "history": [
+    58,
+    53,
+    31,
+    100,
+    119,
+    192,
+    0,
+    0
+   ],
+   "forecast": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    26,
+    33,
+    41,
+    48
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 28.3,
+   "last_temp": 27.6
+  },
+  "Jaffna": {
+   "history": [
+    22,
+    18,
+    15,
+    18,
+    14,
+    24,
+    0,
+    0
+   ],
+   "forecast": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    18,
+    23,
+    28,
+    34
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 24.0,
+   "last_temp": 27.9
+  },
+  "Kilinochchi": {
+   "history": [
+    2,
+    6,
+    1,
+    4,
+    419,
+    6,
+    0,
+    0
+   ],
+   "forecast": [
+    2,
+    3,
+    3,
+    3
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    38,
+    49,
+    60,
+    71
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 27.2,
+   "last_temp": 27.7
+  },
+  "Mannar": {
+   "history": [
+    4,
+    1,
+    1,
+    5,
+    387,
+    5,
+    0,
+    0
+   ],
+   "forecast": [
+    2,
+    2,
+    2,
+    2
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    35,
     45,
     55,
     65
@@ -427,20 +427,20 @@
   },
   "Vavuniya": {
    "history": [
-    4,
     5,
     2,
     5,
     9,
     114,
     8,
+    0,
     0
    ],
    "forecast": [
-    4,
-    5,
-    6,
-    6
+    3,
+    3,
+    3,
+    3
    ],
    "conf_low": [
     0,
@@ -449,10 +449,10 @@
     0
    ],
    "conf_high": [
-    23,
-    28,
-    37,
-    45
+    21,
+    27,
+    32,
+    38
    ],
    "risk": "Low",
    "confidence": 0.3,
@@ -462,13 +462,13 @@
   },
   "Mullaitivu": {
    "history": [
-    0,
     1,
     4,
     3,
     3,
     2,
     3,
+    0,
     0
    ],
    "forecast": [
@@ -497,20 +497,20 @@
   },
   "Batticaloa": {
    "history": [
-    46,
     45,
     47,
     37,
     48,
     89,
     52,
+    0,
     0
    ],
    "forecast": [
-    10,
-    6,
-    8,
-    8
+    1,
+    1,
+    1,
+    1
    ],
    "conf_low": [
     0,
@@ -519,10 +519,10 @@
     0
    ],
    "conf_high": [
-    36,
-    35,
-    48,
-    57
+    20,
+    26,
+    32,
+    38
    ],
    "risk": "Low",
    "confidence": 0.3,
@@ -532,20 +532,20 @@
   },
   "Ampara": {
    "history": [
-    46,
     29,
     41,
     23,
     28,
     10,
     69,
+    0,
     0
    ],
    "forecast": [
-    19,
-    11,
-    15,
-    13
+    2,
+    1,
+    1,
+    1
    ],
    "conf_low": [
     0,
@@ -554,10 +554,10 @@
     0
    ],
    "conf_high": [
-    42,
-    34,
-    50,
-    52
+    19,
+    25,
+    30,
+    36
    ],
    "risk": "Low",
    "confidence": 0.3,
@@ -567,20 +567,20 @@
   },
   "Trincomalee": {
    "history": [
-    35,
     20,
     25,
     21,
     38,
     39,
     32,
+    0,
     0
    ],
    "forecast": [
-    12,
-    7,
-    10,
-    10
+    1,
+    1,
+    1,
+    1
    ],
    "conf_low": [
     0,
@@ -589,10 +589,10 @@
     0
    ],
    "conf_high": [
-    35,
-    30,
-    42,
-    49
+    17,
+    22,
+    27,
+    32
    ],
    "risk": "Low",
    "confidence": 0.3,
@@ -602,125 +602,20 @@
   },
   "Kurunegala": {
    "history": [
-    56,
     45,
     43,
     51,
     100,
     423,
     218,
+    0,
     0
    ],
    "forecast": [
-    126,
-    55,
-    136,
-    82
-   ],
-   "conf_low": [
     1,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    251,
-    124,
-    354,
-    238
-   ],
-   "risk": "Medium",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 40.6,
-   "last_temp": 26.0
-  },
-  "Puttalam": {
-   "history": [
-    18,
-    13,
-    30,
-    16,
-    43,
-    29,
-    148,
-    0
-   ],
-   "forecast": [
-    87,
-    45,
-    72,
-    72
-   ],
-   "conf_low": [
-    0,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    177,
-    108,
-    191,
-    213
-   ],
-   "risk": "High",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 33.3,
-   "last_temp": 27.3
-  },
-  "Anuradhapura": {
-   "history": [
-    12,
-    7,
-    13,
-    8,
-    24,
-    3,
-    51,
-    0
-   ],
-   "forecast": [
-    12,
-    7,
-    10,
-    10
-   ],
-   "conf_low": [
-    0,
-    0,
-    0,
-    0
-   ],
-   "conf_high": [
-    32,
-    28,
-    41,
-    46
-   ],
-   "risk": "Low",
-   "confidence": 0.3,
-   "last_cases": 0,
-   "last_rainfall": 35.9,
-   "last_temp": 26.8
-  },
-  "Polonnaruwa": {
-   "history": [
-    18,
-    13,
-    16,
-    8,
-    23,
-    23,
-    63,
-    0
-   ],
-   "forecast": [
-    17,
-    10,
-    14,
-    13
+    1,
+    1,
+    1
    ],
    "conf_low": [
     0,
@@ -730,9 +625,114 @@
    ],
    "conf_high": [
     39,
-    31,
+    50,
+    61,
+    72
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 40.6,
+   "last_temp": 26.0
+  },
+  "Puttalam": {
+   "history": [
+    13,
+    30,
+    16,
     43,
-    47
+    29,
+    148,
+    0,
+    0
+   ],
+   "forecast": [
+    3,
+    3,
+    3,
+    3
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    23,
+    29,
+    35,
+    41
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 33.3,
+   "last_temp": 27.3
+  },
+  "Anuradhapura": {
+   "history": [
+    7,
+    13,
+    8,
+    24,
+    3,
+    51,
+    0,
+    0
+   ],
+   "forecast": [
+    2,
+    2,
+    2,
+    2
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    18,
+    22,
+    27,
+    31
+   ],
+   "risk": "Low",
+   "confidence": 0.3,
+   "last_cases": 0,
+   "last_rainfall": 35.9,
+   "last_temp": 26.8
+  },
+  "Polonnaruwa": {
+   "history": [
+    13,
+    16,
+    8,
+    23,
+    23,
+    63,
+    0,
+    0
+   ],
+   "forecast": [
+    3,
+    3,
+    3,
+    3
+   ],
+   "conf_low": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "conf_high": [
+    19,
+    24,
+    29,
+    34
    ],
    "risk": "Low",
    "confidence": 0.3,
@@ -742,32 +742,32 @@
   },
   "Badulla": {
    "history": [
-    13,
     20,
     19,
     23,
     36,
     34,
     115,
+    0,
     0
    ],
    "forecast": [
-    26,
-    18,
-    23,
-    21
+    3,
+    3,
+    3,
+    3
    ],
    "conf_low": [
-    1,
+    0,
     0,
     0,
     0
    ],
    "conf_high": [
-    51,
-    43,
-    58,
-    58
+    21,
+    27,
+    32,
+    37
    ],
    "risk": "Low",
    "confidence": 0.3,
@@ -777,20 +777,20 @@
   },
   "Monaragala": {
    "history": [
-    32,
     19,
     13,
     17,
     35,
     65,
     91,
+    0,
     0
    ],
    "forecast": [
-    28,
-    21,
-    25,
-    25
+    2,
+    2,
+    2,
+    2
    ],
    "conf_low": [
     0,
@@ -799,12 +799,12 @@
     0
    ],
    "conf_high": [
-    58,
-    51,
-    67,
-    75
+    20,
+    25,
+    30,
+    36
    ],
-   "risk": "Medium",
+   "risk": "Low",
    "confidence": 0.3,
    "last_cases": 0,
    "last_rainfall": 38.3,
@@ -812,20 +812,20 @@
   },
   "Ratnapura": {
    "history": [
-    164,
     168,
     219,
     173,
     198,
     228,
     264,
+    0,
     0
    ],
    "forecast": [
-    108,
-    47,
-    104,
-    76
+    1,
+    1,
+    1,
+    1
    ],
    "conf_low": [
     0,
@@ -834,10 +834,10 @@
     0
    ],
    "conf_high": [
-    237,
-    134,
-    303,
-    260
+    35,
+    45,
+    55,
+    65
    ],
    "risk": "Low",
    "confidence": 0.3,
@@ -847,34 +847,34 @@
   },
   "Kegalle": {
    "history": [
-    52,
     73,
     69,
     60,
     92,
     25,
     187,
+    0,
     0
    ],
    "forecast": [
-    91,
-    54,
-    75,
-    80
+    2,
+    2,
+    2,
+    2
    ],
    "conf_low": [
-    10,
+    0,
     0,
     0,
     0
    ],
    "conf_high": [
-    172,
-    111,
-    180,
-    212
+    25,
+    32,
+    39,
+    46
    ],
-   "risk": "Medium",
+   "risk": "Low",
    "confidence": 0.3,
    "last_cases": 0,
    "last_rainfall": 50.1,
