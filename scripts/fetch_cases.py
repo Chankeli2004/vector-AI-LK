@@ -189,12 +189,24 @@ def main():
         print("No prior snapshot found -- bootstrapping only. "
               "The real weekly number will appear on the NEXT run.")
         SNAPSHOT_JSON.write_text(json.dumps({
-            "date": pdf_date.isoformat(), "cumulative": current_cumulative,
+            "date": pdf_date.isoformat(), "pdf_date": pdf_date.isoformat(), "cumulative": current_cumulative,
         }, indent=2))
         return
 
     prev = json.loads(SNAPSHOT_JSON.read_text())
     prev_cumulative = prev["cumulative"]
+    prev_pdf_date = prev.get("pdf_date", prev.get("date"))  # tolerate older snapshots
+
+    if prev_pdf_date is not None and pdf_date.isoformat() <= prev_pdf_date:
+        # The most recent published report hasn't advanced since last run --
+        # e.g. the workflow was triggered manually twice before the Ministry
+        # published a new one. Diffing a snapshot against itself would
+        # produce a fake "0 new cases everywhere" week, which is worse than
+        # just doing nothing. So: do nothing, and don't touch the snapshot.
+        print(f"No newer report since last run (last used: {prev_pdf_date}, "
+              f"found: {pdf_date.isoformat()}). Nothing new to add -- exiting "
+              f"cleanly without writing a spurious week.")
+        return
 
     new_rows = []
     for d in DISTRICTS:
@@ -217,7 +229,7 @@ def main():
     print(f"Appended week {iso_week}, {iso_year} for {len(new_rows)} districts.")
 
     SNAPSHOT_JSON.write_text(json.dumps({
-        "date": pdf_date.isoformat(), "cumulative": current_cumulative,
+        "date": pdf_date.isoformat(), "pdf_date": pdf_date.isoformat(), "cumulative": current_cumulative,
     }, indent=2))
 
 
