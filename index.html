@@ -191,6 +191,7 @@
   }
   .stat .value{font-family:'Fraunces',serif; font-size:27px; font-weight:600;}
   .stat .value.risk{color:var(--risk-high);}
+  .trend-arrow{font-weight:700;font-size:15px;}
   .stat .delta{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--risk-high); margin-top:4px;}
   .stat .delta.down{color:var(--risk-low);}
 
@@ -438,8 +439,8 @@
         <h3>How the forecast works</h3>
         <p class="panel-sub">Three steps, from raw reports to a risk call</p>
         <ul class="how-list">
-          <li><span class="ico">1</span><div><b>Time-series forecast.</b> An ARIMA model, fit per district, projects expected case counts for the next 4 weeks.</div></li>
-          <li><span class="ico">2</span><div><b>Risk classification.</b> A Random Forest model flags each district High, Medium, or Low based on recent case trend and weather.</div></li>
+          <li><span class="ico">1</span><div><b>Time-series forecast.</b> A damped trend model (fit in log-space) plus a Random Forest on rainfall/temperature, ensembled together, projects expected case counts for the next 4 weeks.</div></li>
+          <li><span class="ico">2</span><div><b>Two risk signals, kept separate.</b> A <b>severity</b> badge shows how large the case count is in absolute terms; a <b>trend</b> arrow shows whether it's rising or falling relative to that district's own recent pattern. A district can be severely affected but stable, or small but rising fast — those aren't the same thing.</div></li>
           <li><span class="ico">3</span><div><b>You pick a district.</b> See its 8-week trend, forecast, and confidence range — like a weather forecast, but for dengue.</div></li>
         </ul>
       </div>
@@ -457,7 +458,7 @@
     <div class="screen-head">
       <div>
         <p class="section-label">Pick a district</p>
-        <p class="section-sub">25 districts monitored. Colour = Random Forest risk classification for the coming weeks.</p>
+        <p class="section-sub">25 districts monitored. Colour = severity (absolute case count); the arrow on each card shows the trend.</p>
       </div>
     </div>
 
@@ -501,7 +502,7 @@
         </div>
         <div class="legend-row">
           <div class="legend-item"><span class="dot actual"></span>Reported cases</div>
-          <div class="legend-item"><span class="dot predicted"></span>Forecast (ARIMA)</div>
+          <div class="legend-item"><span class="dot predicted"></span>Forecast (trend + weather ensemble)</div>
           <div class="legend-item"><span class="dot band"></span>80% confidence range</div>
         </div>
         <canvas id="forecastChart"></canvas>
@@ -534,6 +535,37 @@ const FALLBACK_DATA = {"Ampara": {"history": [41, 46, 29, 41, 23, 28, 10, 69], "
 const riskLabel = { High:"High risk", Medium:"Medium risk", Low:"Low risk" };
 const riskClass = { High:"high", Medium:"mid", Low:"low" };
 const riskColor = { High:"#B84A3E", Medium:"#B9832A", Low:"#3F7D5C" };
+
+const trendArrow = { Rising:"↑", Stable:"→", Falling:"↓" };
+const trendLabel = { Rising:"Rising", Stable:"Stable", Falling:"Falling" };
+const trendColor = { Rising:"#B84A3E", Stable:"#8A8272", Falling:"#3F7D5C" };
+
+/* Compatibility layer: older/offline data (like FALLBACK_DATA above) may
+   only have a single 'risk' field instead of separate severity+trend.
+   Compute both the same way build_data.py does, so the UI always has
+   both signals regardless of data source. */
+function normalizeDistrictData(data){
+  const allLastCases = Object.values(data).map(d => d.last_cases).sort((a,b)=>a-b);
+  const pct = (p) => {
+    const idx = Math.min(allLastCases.length - 1, Math.floor(p * allLastCases.length));
+    return allLastCases[idx];
+  };
+  const lowCut = pct(0.33), highCut = pct(0.67);
+
+  for(const name of Object.keys(data)){
+    const d = data[name];
+    if(!d.severity){
+      d.severity = d.last_cases >= highCut ? "High" : d.last_cases <= lowCut ? "Low" : "Medium";
+    }
+    if(!d.trend){
+      const baseline = d.history.reduce((a,b)=>a+b,0) / d.history.length;
+      const forecastMean = d.forecast.reduce((a,b)=>a+b,0) / d.forecast.length;
+      const ratio = baseline > 0 ? forecastMean / baseline : (forecastMean >= 1 ? 2 : 1);
+      d.trend = ratio > 1.3 ? "Rising" : ratio < 0.7 ? "Falling" : "Stable";
+    }
+  }
+  return data;
+}
 
 // Populated by boot() once data is loaded (live fetch or fallback).
 let DASHBOARD_DATA = null;
@@ -625,7 +657,7 @@ function sparkSvg(data, color){
 
 /* ---------------- HOME ---------------- */
 function renderHomeStats(){
-  const highCount = districts.filter(n=>DASHBOARD_DATA[n].risk==='High').length;
+  const highCount = districts.filter(n=>DASHBOARD_DATA[n].severity==='High').length;
   const totalCases = districts.reduce((sum,n)=>sum+DASHBOARD_DATA[n].last_cases,0);
   document.getElementById('homeStats').innerHTML = `
     <div class="stat">
@@ -654,7 +686,7 @@ function renderWatchlist(){
   const top = districts.slice(0,6);
   document.getElementById('watchlist').innerHTML = top.map((name,i)=>{
     const d = DASHBOARD_DATA[name];
-    const rc = riskClass[d.risk];
+    const rc = riskClass[d.severity];
     return `<div class="watchlist-row" data-name="${name}">
       <div class="wl-left">
         <span class="wl-rank">${String(i+1).padStart(2,'0')}</span>
@@ -664,7 +696,8 @@ function renderWatchlist(){
         </div>
       </div>
       <div class="wl-right">
-        <span class="badge ${rc}">${riskLabel[d.risk]}</span>
+        <span class="trend-arrow" style="color:${trendColor[d.trend]}" title="${trendLabel[d.trend]}">${trendArrow[d.trend]}</span>
+        <span class="badge ${rc}">${riskLabel[d.severity]}</span>
       </div>
     </div>`;
   }).join('');
@@ -680,7 +713,7 @@ function renderWatchlist(){
 function filteredDistricts(){
   return districts.filter(name=>{
     const d = DASHBOARD_DATA[name];
-    const matchesFilter = currentFilter === 'all' || d.risk === currentFilter;
+    const matchesFilter = currentFilter === 'all' || d.severity === currentFilter;
     const matchesQuery = name.toLowerCase().includes(currentQuery.toLowerCase());
     return matchesFilter && matchesQuery;
   });
@@ -695,7 +728,7 @@ function renderGrid(){
   }
   grid.innerHTML = list.map(name => {
     const d = DASHBOARD_DATA[name];
-    const rc = riskClass[d.risk];
+    const rc = riskClass[d.severity];
     return `
     <div class="dcard ${rc}" data-name="${name}">
       <div class="dcard-top">
@@ -703,9 +736,12 @@ function renderGrid(){
           <div class="dcard-name">${name}</div>
           <div class="dcard-cases">${d.last_cases.toLocaleString()} cases this week</div>
         </div>
-        <span class="badge ${rc}">${riskLabel[d.risk]}</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="trend-arrow" style="color:${trendColor[d.trend]}" title="${trendLabel[d.trend]}">${trendArrow[d.trend]}</span>
+          <span class="badge ${rc}">${riskLabel[d.severity]}</span>
+        </div>
       </div>
-      ${sparkSvg(d.history, riskColor[d.risk])}
+      ${sparkSvg(d.history, riskColor[d.severity])}
     </div>
   `;}).join('');
   grid.querySelectorAll('.dcard').forEach(card=>{
@@ -742,8 +778,9 @@ document.getElementById('districtSelect').addEventListener('change', (e)=>{
 
 function renderQuickFacts(d){
   document.getElementById('quickFacts').innerHTML = `
-    <div class="quickfact"><span class="k">Risk band</span><span class="v"><span class="badge ${riskClass[d.risk]}">${riskLabel[d.risk]}</span></span></div>
-    <div class="quickfact"><span class="k">Classifier confidence</span><span class="v">${Math.round(d.confidence*100)}%</span></div>
+    <div class="quickfact"><span class="k">Severity</span><span class="v"><span class="badge ${riskClass[d.severity]}">${riskLabel[d.severity]}</span></span></div>
+    <div class="quickfact"><span class="k">Trend</span><span class="v" style="color:${trendColor[d.trend]}">${trendArrow[d.trend]} ${trendLabel[d.trend]}</span></div>
+    <div class="quickfact"><span class="k">Model confidence</span><span class="v">${Math.round(d.confidence*100)}%</span></div>
     <div class="quickfact"><span class="k">This week</span><span class="v">${d.last_cases} cases</span></div>
     <div class="quickfact"><span class="k">4-wk forecast peak</span><span class="v">${Math.max(...d.forecast)} cases</span></div>
     <div class="quickfact"><span class="k">Rainfall (last wk)</span><span class="v">${d.last_rainfall} mm</span></div>
@@ -754,12 +791,14 @@ function renderQuickFacts(d){
 function renderActionStrip(name, d){
   const strip = document.getElementById('actionStrip');
   const peak = Math.max(...d.forecast);
-  if(d.risk === 'High'){
-    strip.innerHTML = `<p><b>Elevated risk.</b> ${name} is forecast to see up to <b>${peak} cases</b> over the next 4 weeks. Mosquito control and public messaging are recommended now, ahead of the projected peak.</p>`;
-  } else if(d.risk === 'Medium'){
-    strip.innerHTML = `<p><b>Watch closely.</b> ${name}'s trend is rising. Forecast peak over the next 4 weeks is <b>${peak} cases</b> — a good time to check drainage and standing water.</p>`;
+  if(d.severity === 'High' && d.trend === 'Rising'){
+    strip.innerHTML = `<p><b>Elevated and rising.</b> ${name} already has a high case count and it's climbing further — forecast up to <b>${peak} cases</b> over the next 4 weeks. Mosquito control and public messaging are recommended now, ahead of the projected peak.</p>`;
+  } else if(d.severity === 'High'){
+    strip.innerHTML = `<p><b>Elevated but stable.</b> ${name} has a high case count, but it's holding roughly steady rather than climbing — forecast peak of <b>${peak} cases</b> over the next 4 weeks. Sustained vector control is still warranted given the absolute burden.</p>`;
+  } else if(d.trend === 'Rising'){
+    strip.innerHTML = `<p><b>Watch closely.</b> ${name}'s case count is still moderate, but the trend is rising. Forecast peak over the next 4 weeks is <b>${peak} cases</b> — a good time to check drainage and standing water before it grows further.</p>`;
   } else {
-    strip.innerHTML = `<p><b>Stable.</b> ${name} remains low-risk, with a forecast peak of <b>${peak} cases</b> over the next 4 weeks. Routine precautions are sufficient.</p>`;
+    strip.innerHTML = `<p><b>Stable.</b> ${name} remains low-severity with a stable trend, forecast peak of <b>${peak} cases</b> over the next 4 weeks. Routine precautions are sufficient.</p>`;
   }
 }
 
@@ -808,8 +847,8 @@ function updateResults(){
   const d = DASHBOARD_DATA[active];
   document.getElementById('resultTitle').textContent = active;
   const rb = document.getElementById('resultBadge');
-  rb.textContent = riskLabel[d.risk];
-  rb.className = 'badge-lg ' + riskClass[d.risk];
+  rb.textContent = riskLabel[d.severity] + ' · ' + trendArrow[d.trend] + ' ' + trendLabel[d.trend];
+  rb.className = 'badge-lg ' + riskClass[d.severity];
   document.getElementById('districtSelect').value = active;
   renderQuickFacts(d);
   renderChart(active, d);
@@ -819,7 +858,7 @@ function updateResults(){
 /* ---------------- Init ---------------- */
 async function boot(){
   const { data, meta, source } = await loadData();
-  DASHBOARD_DATA = data;
+  DASHBOARD_DATA = normalizeDistrictData(data);
   DATA_META = meta;
   DATA_SOURCE = source;
   districts = Object.keys(DASHBOARD_DATA).sort((a,b)=> DASHBOARD_DATA[b].last_cases - DASHBOARD_DATA[a].last_cases);
